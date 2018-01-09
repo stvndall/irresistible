@@ -43,13 +43,18 @@ app.put('/api/v1.0/toppings/:id', function(req, res) {
 });
 
 app.post('/api/v1.0/toppings', function(req, res) {
-  if(!req.body.hasOwnProperty('title')) {
+  /*book in page 38 uses {topping {id. title}}
+   code only accepted {title}
+   using conditional set, to ensure people who are using {title} dont stop working
+  */
+  const body = req.body.topping || req.body
+  if(!body.hasOwnProperty('title')) {
     res.statusCode = 400;
     return res.send('Error 400: Post syntax incorrect.');
   }
   var newid = toppings.toppings.length;
   var newTopping = {
-    title : req.body.title
+    title : body.title
   };
 
   toppings.toppings.push(newTopping);
